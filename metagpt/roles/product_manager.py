@@ -22,8 +22,8 @@ class ProductManager(Role):
     
     def __init__(self, 
                  name: str = "Alice", 
-                 profile: str = "Product Manager", 
-                 goal: str = "Efficiently create a successful product",
+                 profile: str = "产品经理", 
+                 goal: str = "高效创建成功的产品",
                  constraints: str = "") -> None:
         """
         Initializes the ProductManager role with given attributes.

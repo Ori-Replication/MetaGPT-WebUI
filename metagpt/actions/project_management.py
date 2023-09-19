@@ -12,35 +12,35 @@ from metagpt.const import WORKSPACE_ROOT
 from metagpt.utils.common import CodeParser
 
 PROMPT_TEMPLATE = '''
-# Context
+# 上下文
 {context}
 
-## Format example
+## 格式示例
 {format_example}
 -----
-Role: You are a project manager; the goal is to break down tasks according to PRD/technical design, give a task list, and analyze task dependencies to start with the prerequisite modules
-Requirements: Based on the context, fill in the following missing information, note that all sections are returned in Python code triple quote form seperatedly. Here the granularity of the task is a file, if there are any missing files, you can supplement them
-Attention: Use '##' to split sections, not '#', and '## <SECTION_NAME>' SHOULD WRITE BEFORE the code and triple quote.
+角色：你是一个项目经理；目标是根据PRD/技术设计，进行任务分解，给出任务清单，并分析任务依赖，以便从先决模块开始进行
+要求：基于上下文，填写以下缺失的信息，注意所有部分都以Python代码的三引号形式单独返回。这里的任务粒度是一个文件，如果有任何缺失的文件，你可以补充它们
+注意：使用'##'来分割章节，不是'#'，并且'## <SECTION_NAME>'应该写在代码和三引号之前。
 
-## Required Python third-party packages: Provided in requirements.txt format
+## 所需的Python第三方包：以requirements.txt格式提供
 
-## Required Other language third-party packages: Provided in requirements.txt format
+## 所需的其他语言第三方包：以requirements.txt格式提供
 
-## Full API spec: Use OpenAPI 3.0. Describe all APIs that may be used by both frontend and backend.
+## 完整的API规范：使用OpenAPI 3.0。描述前端和后端可能使用的所有API。
 
-## Logic Analysis: Provided as a Python list[str, str]. the first is filename, the second is class/method/function should be implemented in this file. Analyze the dependencies between the files, which work should be done first
+## 逻辑分析：以Python list[str, str]的形式提供。第一个是文件名，第二个是在这个文件中应该实现的类/方法/函数。分析文件之间的依赖关系，哪些工作应该先做
 
-## Task list: Provided as Python list[str]. Each str is a filename, the more at the beginning, the more it is a prerequisite dependency, should be done first
+## 任务列表：以Python list[str]的形式提供。每个str都是一个文件名，越在前面，就越是一个先决依赖，应该先完成
 
-## Shared Knowledge: Anything that should be public like utils' functions, config's variables details that should make clear first. 
+## 共享知识：任何应该公开的东西，比如utils的函数，config的变量细节，都应该先明确。
 
-## Anything UNCLEAR: Provide as Plain text. Make clear here. For example, don't forget a main entry. don't forget to init 3rd party libs.
+## 任何不清晰的地方：以纯文本形式提供。在这里明确。例如，不要忘记一个主入口。不要忘记初始化第三方库。
 
 '''
 
 FORMAT_EXAMPLE = '''
 ---
-## Required Python third-party packages
+## 所需的Python第三方包
 ```python
 """
 flask==1.1.2
@@ -48,56 +48,56 @@ bcrypt==3.2.0
 """
 ```
 
-## Required Other language third-party packages
+## 所需的其他语言第三方包
 ```python
 """
 No third-party ...
 """
 ```
 
-## Full API spec
+## 完整的API规范
 ```python
 """
 openapi: 3.0.0
 ...
-description: A JSON object ...
+描述: 一个 JSON 文件 ...
 """
 ```
 
-## Logic Analysis
+## 逻辑分析
 ```python
 [
-    ("game.py", "Contains ..."),
+    ("game.py", "包含 ..."),
 ]
 ```
 
-## Task list
+## 任务列表
 ```python
 [
     "game.py",
 ]
 ```
 
-## Shared Knowledge
+## 共享知识
 ```python
 """
-'game.py' contains ...
+'game.py' 包含 ...
 """
 ```
 
-## Anything UNCLEAR
-We need ... how to start.
+## 任何不清晰的地方
+我们需要... 以及如何开始...
 ---
 '''
 
 OUTPUT_MAPPING = {
-    "Required Python third-party packages": (str, ...),
-    "Required Other language third-party packages": (str, ...),
-    "Full API spec": (str, ...),
-    "Logic Analysis": (List[Tuple[str, str]], ...),
-    "Task list": (List[str], ...),
-    "Shared Knowledge": (str, ...),
-    "Anything UNCLEAR": (str, ...),
+    "所需的Python第三方包": (str, ...),
+    "所需的其他语言第三方包": (str, ...),
+    "完整的API规范": (str, ...),
+    "逻辑分析": (List[Tuple[str, str]], ...),
+    "任务列表": (List[str], ...),
+    "共享知识": (str, ...),
+    "任何不清晰的地方": (str, ...),
 }
 
 
@@ -107,13 +107,13 @@ class WriteTasks(Action):
         super().__init__(name, context, llm)
 
     def _save(self, context, rsp):
-        ws_name = CodeParser.parse_str(block="Python package name", text=context[-1].content)
+        ws_name = CodeParser.parse_str(block="Python包名", text=context[-1].content)
         file_path = WORKSPACE_ROOT / ws_name / 'docs/api_spec_and_tasks.md'
         file_path.write_text(rsp.content)
 
         # Write requirements.txt
         requirements_path = WORKSPACE_ROOT / ws_name / 'requirements.txt'
-        requirements_path.write_text(rsp.instruct_content.dict().get("Required Python third-party packages").strip('"\n'))
+        requirements_path.write_text(rsp.instruct_content.dict().get("所需的Python第三方包").strip('"\n'))
 
     async def run(self, context):
         prompt = PROMPT_TEMPLATE.format(context=context, format_example=FORMAT_EXAMPLE)

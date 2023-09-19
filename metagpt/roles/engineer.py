@@ -62,9 +62,9 @@ class Engineer(Role):
     
     def __init__(self, 
                  name: str = "Alex", 
-                 profile: str = "Engineer", 
-                 goal: str = "Write elegant, readable, extensible, efficient code",
-                 constraints: str = "The code should conform to standards like PEP8 and be modular and maintainable",
+                 profile: str = "工程师", 
+                 goal: str = "编写优雅、可读、可扩展、高效的代码",
+                 constraints: str = "代码应符合PEP8等标准，并具有模块化和可维护性",
                  n_borg: int = 1, 
                  use_code_review: bool = False) -> None:
         """Initializes the Engineer role with given attributes."""
@@ -80,8 +80,8 @@ class Engineer(Role):
     @classmethod
     def parse_tasks(self, task_msg: Message) -> list[str]:
         if task_msg.instruct_content:
-            return task_msg.instruct_content.dict().get("Task list")
-        return CodeParser.parse_file_list(block="Task list", text=task_msg.content)
+            return task_msg.instruct_content.dict().get("任务列表")
+        return CodeParser.parse_file_list(block="任务列表", text=task_msg.content)
 
     @classmethod
     def parse_code(self, code_text: str) -> str:
@@ -90,8 +90,8 @@ class Engineer(Role):
     @classmethod
     def parse_workspace(cls, system_design_msg: Message) -> str:
         if system_design_msg.instruct_content:
-            return system_design_msg.instruct_content.dict().get("Python package name").strip().strip("'").strip("\"")
-        return CodeParser.parse_str(block="Python package name", text=system_design_msg.content)
+            return system_design_msg.instruct_content.dict().get("Python包名").strip().strip("'").strip("\"")
+        return CodeParser.parse_str(block="Python包名", text=system_design_msg.content)
 
     def get_workspace(self) -> Path:
         msg = self._rc.memory.get_by_action(WriteDesign)[-1]

@@ -14,7 +14,7 @@ from metagpt.provider.base_chatbot import BaseChatbot
 
 class BaseGPTAPI(BaseChatbot):
     """GPT API abstract class, requiring all inheritors to provide a series of standard capabilities"""
-    system_prompt = 'You are a helpful assistant.'
+    system_prompt = '你是一个中文助手.'
 
     def _user_msg(self, msg: str) -> dict[str, str]:
         return {"role": "user", "content": msg}

@@ -14,45 +14,45 @@ from metagpt.actions.action import Action
 from metagpt.logs import logger
 
 PROMPT_TEMPLATE = """
-Role: You are a senior development and qa engineer, your role is summarize the code running result.
-If the running result does not include an error, you should explicitly approve the result.
-On the other hand, if the running result indicates some error, you should point out which part, the development code or the test code, produces the error,
-and give specific instructions on fixing the errors. Here is the code info:
+角色：你是一位高级开发和质量保证工程师，你的角色是总结代码运行结果。
+如果运行结果中没有包含错误，你应该明确批准结果。
+另一方面，如果运行结果显示出一些错误，你应该指出是哪部分，开发代码还是测试代码，产生了错误，
+并给出修复错误的具体指导。以下是代码信息：
 {context}
-Now you should begin your analysis
+现在你应该开始你的分析
 ---
-## instruction:
-Please summarize the cause of the errors and give correction instruction
-## File To Rewrite:
-Determine the ONE file to rewrite in order to fix the error, for example, xyz.py, or test_xyz.py
-## Status:
-Determine if all of the code works fine, if so write PASS, else FAIL,
-WRITE ONLY ONE WORD, PASS OR FAIL, IN THIS SECTION
-## Send To:
-Please write Engineer if the errors are due to problematic development codes, and QaEngineer to problematic test codes, and NoOne if there are no errors,
-WRITE ONLY ONE WORD, Engineer OR QaEngineer OR NoOne, IN THIS SECTION.
+## 指导：
+请总结错误的原因并给出纠正指导
+## 需要重写的文件：
+确定一个需要重写的文件以修复错误，例如，xyz.py，或者test_xyz.py
+## 状态：
+确定所有的代码是否都运行正常，如果是，请写PASS，否则写FAIL，
+在这个部分只写一个词，PASS或FAIL
+## 发送给：
+如果错误是由于开发代码的问题，请写Engineer，如果是由于测试代码的问题，请写QaEngineer，如果没有错误，请写NoOne，
+在这个部分只写一个词，Engineer或QaEngineer或NoOne
 ---
-You should fill in necessary instruction, status, send to, and finally return all content between the --- segment line.
+你应该填写必要的指导，状态，发送给，最后返回所有在---分割线之间的内容。
 """
 
 CONTEXT = """
-## Development Code File Name
+## 开发代码文件名
 {code_file_name}
-## Development Code
+## 开发代码
 ```python
 {code}
 ```
-## Test File Name
+## 测试文件名
 {test_file_name}
-## Test Code
+## 测试代码
 ```python
 {test_code}
 ```
-## Running Command
+## 运行命令
 {command}
-## Running Output
-standard output: {outs};
-standard errors: {errs};
+## 运行输出
+标准输出: {outs};
+标准错误: {errs};
 """
 
 

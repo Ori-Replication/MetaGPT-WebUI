@@ -16,48 +16,48 @@ from metagpt.utils.common import CodeParser
 from metagpt.utils.mermaid import mermaid_to_file
 
 PROMPT_TEMPLATE = """
-# Context
+# 上下文
 {context}
 
-## Format example
+## 格式示例
 {format_example}
 -----
-Role: You are an architect; the goal is to design a SOTA PEP8-compliant python system; make the best use of good open source tools
-Requirement: Fill in the following missing information based on the context, note that all sections are response with code form separately
-Max Output: 8192 chars or 2048 tokens. Try to use them up.
-Attention: Use '##' to split sections, not '#', and '## <SECTION_NAME>' SHOULD WRITE BEFORE the code and triple quote.
+角色：你是一名架构师；目标是设计一套符合PEP8规范的Python系统；最大限度地利用优秀的开源工具
+需求：根据上下文填写以下缺失的信息，注意所有部分都以代码形式单独回应
+最大输出：8192个字符或2048个令牌。尽量使用它们。
+注意：使用'##'来分割部分，而不是'#'，并且'## <SECTION_NAME>'应在代码和三引号之前写。
 
-## Implementation approach: Provide as Plain text. Analyze the difficult points of the requirements, select the appropriate open-source framework.
+## 实施方法：以纯文本形式提供。分析需求的难点，选择合适的开源框架。
 
-## Python package name: Provide as Python str with python triple quoto, concise and clear, characters only use a combination of all lowercase and underscores
+## Python包名：以Python str提供，使用python三引号，简洁明了，字符只使用全部小写和下划线的组合
 
-## File list: Provided as Python list[str], the list of ONLY REQUIRED files needed to write the program(LESS IS MORE!). Only need relative paths, comply with PEP8 standards. ALWAYS write a main.py or app.py here
+## 文件列表：以Python list[str]提供，只需要编写程序所需的文件列表（越少越好！）。只需要相对路径，符合PEP8标准。总是在这里写一个main.py或app.py
 
-## Data structures and interface definitions: Use mermaid classDiagram code syntax, including classes (INCLUDING __init__ method) and functions (with type annotations), CLEARLY MARK the RELATIONSHIPS between classes, and comply with PEP8 standards. The data structures SHOULD BE VERY DETAILED and the API should be comprehensive with a complete design. 
+## 数据结构和接口定义：使用mermaid classDiagram代码语法，包括类（包括__init__方法）和函数（带类型注解），清楚地标记类之间的关系，并符合PEP8标准。数据结构应非常详细，API应全面，设计完整。
 
-## Program call flow: Use sequenceDiagram code syntax, COMPLETE and VERY DETAILED, using CLASSES AND API DEFINED ABOVE accurately, covering the CRUD AND INIT of each object, SYNTAX MUST BE CORRECT.
+## 程序调用流程：使用sequenceDiagram代码语法，完整和非常详细，准确使用上述定义的类和API，覆盖每个对象的CRUD和INIT，语法必须正确。
 
-## Anything UNCLEAR: Provide as Plain text. Make clear here.
+## 有任何不清楚的地方：以纯文本形式提供。在这里明确。
 
 """
 FORMAT_EXAMPLE = """
 ---
-## Implementation approach
-We will ...
+## 实施方法
+我们会 ...
 
-## Python package name
+## Python包名
 ```python
 "snake_game"
 ```
 
-## File list
+## 文件列表
 ```python
 [
     "main.py",
 ]
 ```
 
-## Data structures and interface definitions
+## 数据结构和接口定义
 ```mermaid
 classDiagram
     class Game{
@@ -67,34 +67,33 @@ classDiagram
     Game "1" -- "1" Food: has
 ```
 
-## Program call flow
+## 程序调用流程
 ```mermaid
 sequenceDiagram
-    participant M as Main
+    participant M as 主程序
     ...
-    G->>M: end game
+    G->>M: 结束游戏
 ```
 
-## Anything UNCLEAR
-The requirement is clear to me.
+## 不清楚的地方
+没有不清楚的地方
 ---
 """
 OUTPUT_MAPPING = {
-    "Implementation approach": (str, ...),
-    "Python package name": (str, ...),
-    "File list": (List[str], ...),
-    "Data structures and interface definitions": (str, ...),
-    "Program call flow": (str, ...),
-    "Anything UNCLEAR": (str, ...),
+    "实施方法": (str, ...),
+    "Python包名": (str, ...),
+    "文件列表": (List[str], ...),
+    "数据结构和接口定义": (str, ...),
+    "程序调用流程": (str, ...),
+    "不清楚的地方": (str, ...),
 }
 
 
 class WriteDesign(Action):
     def __init__(self, name, context=None, llm=None):
         super().__init__(name, context, llm)
-        self.desc = "Based on the PRD, think about the system design, and design the corresponding APIs, " \
-                    "data structures, library tables, processes, and paths. Please provide your design, feedback " \
-                    "clearly and in detail."
+        self.desc = "基于PRD，思考系统设计，并设计相应的APIs，" \
+                    "数据结构，库表，流程和路径。请详细清晰地提供你的设计和反馈。"
 
     def recreate_workspace(self, workspace: Path):
         try:
@@ -105,14 +104,14 @@ class WriteDesign(Action):
 
     def _save_prd(self, docs_path, resources_path, prd):
         prd_file = docs_path / 'prd.md'
-        quadrant_chart = CodeParser.parse_code(block="Competitive Quadrant Chart", text=prd)
-        mermaid_to_file(quadrant_chart, resources_path / 'competitive_analysis')
+        quadrant_chart = CodeParser.parse_code(block="竞品象限图", text=prd)
+        mermaid_to_file(quadrant_chart, resources_path / '竞品分析')
         logger.info(f"Saving PRD to {prd_file}")
         prd_file.write_text(prd)
 
     def _save_system_design(self, docs_path, resources_path, content):
-        data_api_design = CodeParser.parse_code(block="Data structures and interface definitions", text=content)
-        seq_flow = CodeParser.parse_code(block="Program call flow", text=content)
+        data_api_design = CodeParser.parse_code(block="数据结构和接口定义", text=content)
+        seq_flow = CodeParser.parse_code(block="程序调用流程", text=content)
         mermaid_to_file(data_api_design, resources_path / 'data_api_design')
         mermaid_to_file(seq_flow, resources_path / 'seq_flow')
         system_design_file = docs_path / 'system_design.md'
@@ -122,10 +121,10 @@ class WriteDesign(Action):
     def _save(self, context, system_design):
         if isinstance(system_design, ActionOutput):
             content = system_design.content
-            ws_name = CodeParser.parse_str(block="Python package name", text=content)
+            ws_name = CodeParser.parse_str(block="Python包名", text=content)
         else:
             content = system_design
-            ws_name = CodeParser.parse_str(block="Python package name", text=system_design)
+            ws_name = CodeParser.parse_str(block="Python包名", text=system_design)
         workspace = WORKSPACE_ROOT / ws_name
         self.recreate_workspace(workspace)
         docs_path = workspace / 'docs'

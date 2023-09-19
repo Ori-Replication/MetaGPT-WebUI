@@ -12,12 +12,12 @@ class WritePRDReview(Action):
     def __init__(self, name, context=None, llm=None):
         super().__init__(name, context, llm)
         self.prd = None
-        self.desc = "Based on the PRD, conduct a PRD Review, providing clear and detailed feedback"
+        self.desc = "基于PRD，进行PRD审查，提供清晰详细的反馈"
         self.prd_review_prompt_template = """
-        Given the following Product Requirement Document (PRD):
+        给出以下的产品需求文档(PRD)：
         {prd}
 
-        As a project manager, please review it and provide your feedback and suggestions.
+        作为项目经理，请审查并提供您的反馈和建议。
         """
 
     async def run(self, prd):

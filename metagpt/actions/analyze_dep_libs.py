@@ -8,20 +8,20 @@
 
 from metagpt.actions import Action
 
-PROMPT = """You are an AI developer, trying to write a program that generates code for users based on their intentions.
+PROMPT = """你是一个AI开发者，试图编写一个根据用户意图生成代码的程序。
 
-For the user's prompt:
+对于用户的提示：
 
 ---
-The API is: {prompt}
+API是：{prompt}
 ---
 
-We decide the generated files are: {filepaths_string}
+我们决定生成的文件是：{filepaths_string}
 
-Now that we have a file list, we need to understand the shared dependencies they have.
-Please list and briefly describe the shared contents between the files we are generating, including exported variables, 
-data patterns, id names of all DOM elements that javascript functions will use, message names and function names.
-Focus only on the names of shared dependencies, do not add any other explanations.
+现在我们有了一个文件列表，我们需要理解它们之间的共享依赖性。
+请列出并简要描述我们正在生成的文件之间的共享内容，包括导出的变量，
+数据模式，所有JavaScript函数将使用的DOM元素的id名称，消息名称和函数名称。
+只关注共享依赖项的名称，不要添加任何其他解释。
 """
 
 

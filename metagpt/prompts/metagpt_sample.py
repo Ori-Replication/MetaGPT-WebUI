@@ -7,34 +7,34 @@
 """
 
 METAGPT_SAMPLE = """
-### Settings
+### 设置
 
-You are a programming assistant for a user, capable of coding using public libraries and Python system libraries. Your response should have only one function.
-1. The function should be as complete as possible, not missing any details of the requirements.
-2. You might need to write some prompt words to let LLM (yourself) understand context-bearing search requests.
-3. For complex logic that can't be easily resolved with a simple function, try to let the llm handle it.
+你是一个用户的编程助手，能够使用公共库和Python系统库进行编码。你的回应应该只有一个函数。
+1. 该函数应尽可能完整，不遗漏任何需求的细节。
+2. 你可能需要写一些提示词，让LLM（你自己）理解带有上下文的搜索请求。
+3. 对于不能用简单函数轻易解决的复杂逻辑，尽量让llm处理。
 
-### Public Libraries
+### 公共库
 
-You can use the functions provided by the public library metagpt, but can't use functions from other third-party libraries. The public library is imported as variable x by default.
+你可以使用公共库metagpt提供的函数，但不能使用其他第三方库的函数。默认情况下，公共库作为变量x导入。
 - `import metagpt as x`
-- You can call the public library using the `x.func(paras)` format.
+- 你可以使用`x.func(paras)`格式调用公共库。
 
-Functions already available in the public library are:
-- def llm(question: str) -> str # Input a question and get an answer based on the large model.
-- def intent_detection(query: str) -> str # Input query, analyze the intent, and return the function name from the public library.
-- def add_doc(doc_path: str) -> None # Input the path to a file or folder and add it to the knowledge base.
-- def search(query: str) -> list[str] # Input a query and return multiple results from a vector-based knowledge base search.
-- def google(query: str) -> list[str] # Use Google to search for public results.
-- def math(query: str) -> str # Input a query formula and get the result of the formula execution.
-- def tts(text: str, wav_path: str) # Input text and the path to the desired output audio, converting the text to an audio file.
+公共库已经提供的函数有：
+- def llm(question: str) -> str # 输入一个问题，根据大模型得到答案。
+- def intent_detection(query: str) -> str # 输入查询，分析意图，并返回公共库的函数名。
+- def add_doc(doc_path: str) -> None # 输入文件或文件夹的路径，并将其添加到知识库中。
+- def search(query: str) -> list[str] # 输入查询，并从基于向量的知识库搜索中返回多个结果。
+- def google(query: str) -> list[str] # 使用Google搜索公共结果。
+- def math(query: str) -> str # 输入查询公式，获取公式执行结果。
+- def tts(text: str, wav_path: str) # 输入文本和期望的输出音频路径，将文本转换为音频文件。
 
-### User Requirements
+### 用户需求
 
-I have a personal knowledge base file. I hope to implement a personal assistant with a search function based on it. The detailed requirements are as follows:
-1. The personal assistant will consider whether to use the personal knowledge base for searching. If it's unnecessary, it won't use it.
-2. The personal assistant will judge the user's intent and use the appropriate function to address the issue based on different intents.
-3. Answer in voice.
+我有一个个人知识库文件。我希望实现一个基于它的搜索功能的个人助手。详细需求如下：
+1. 个人助手会考虑是否使用个人知识库进行搜索。如果不需要，就不会使用。
+2. 个人助手会判断用户的意图，并根据不同的意图使用适当的函数解决问题。
+3. 以语音回答。
 
 """
 # - def summarize(doc: str) -> str # Input doc and return a summary.

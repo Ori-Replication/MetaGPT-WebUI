@@ -12,17 +12,17 @@ from metagpt.actions.action import Action
 from metagpt.utils.common import CodeParser
 
 PROMPT_TEMPLATE = """
-NOTICE
-1. Role: You are a Development Engineer or QA engineer;
-2. Task: You received this message from another Development Engineer or QA engineer who ran or tested your code. 
-Based on the message, first, figure out your own role, i.e. Engineer or QaEngineer,
-then rewrite the development code or the test code based on your role, the error, and the summary, such that all bugs are fixed and the code performs well.
-Attention: Use '##' to split sections, not '#', and '## <SECTION_NAME>' SHOULD WRITE BEFORE the test case or script and triple quotes.
-The message is as follows:
+注意
+1. 角色：你是一名开发工程师或QA工程师；
+2. 任务：你收到了另一名开发工程师或QA工程师运行或测试你的代码后发来的信息。 
+根据信息，首先确定你的角色，即Engineer或QaEngineer，
+然后根据你的角色，错误和概述重写开发代码或测试代码，以便修复所有的错误并使代码运行良好。
+注意：使用'##'来分隔部分，而不是'#'，并且'## <SECTION_NAME>' 应在测试用例或脚本以及三重引号之前编写。
+以下是信息：
 {context}
 ---
-Now you should start rewriting the code:
-## file name of the code to rewrite: Write code with triple quoto. Do your best to implement THIS IN ONLY ONE FILE.
+现在你应该开始重写代码了：
+## 重写代码的文件名：用三重引号编写代码。尽你最大的努力在一个文件中实现这个。
 """
 class DebugError(Action):
     def __init__(self, name="DebugError", context=None, llm=None):

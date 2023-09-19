@@ -28,13 +28,13 @@ from metagpt.actions.action import Action
 from metagpt.utils.common import OutputParser
 from metagpt.utils.pycst import merge_docstring
 
-PYTHON_DOCSTRING_SYSTEM = '''### Requirements
-1. Add docstrings to the given code following the {style} style.
-2. Replace the function body with an Ellipsis object(...) to reduce output.
-3. If the types are already annotated, there is no need to include them in the docstring.
-4. Extract only class, function or the docstrings for the module parts from the given Python code, avoiding any other text.
+PYTHON_DOCSTRING_SYSTEM = '''### 要求
+1. 按照 {style} 风格给给定的代码添加docstrings。
+2. 用省略号对象(...)替换函数体以减少输出。
+3. 如果类型已经被注解，那么在docstring中无需再包含它们。
+4. 从给定的Python代码中只提取类、函数或模块部分的docstrings，避免任何其他文本。
 
-### Input Example
+### 输入示例
 ```python
 def function_with_pep484_type_annotations(param1: int) -> bool:
     return isinstance(param1, int)
@@ -44,7 +44,7 @@ class ExampleError(Exception):
         self.msg = msg
 ```
 
-### Output Example
+### 输出示例
 ```python
 {example}
 ```

@@ -22,8 +22,8 @@ class ProjectManager(Role):
     
     def __init__(self, 
                  name: str = "Eve", 
-                 profile: str = "Project Manager", 
-                 goal: str = "Improve team efficiency and deliver with quality and quantity",
+                 profile: str = "项目经理", 
+                 goal: str = "提高团队效率，保质保量交付",
                  constraints: str = "") -> None:
         """
         Initializes the ProjectManager role with given attributes.
