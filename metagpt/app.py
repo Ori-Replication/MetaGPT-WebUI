@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+"""
+@Time    : 2023/9/19 17:12
+@Author  : ORI_Replication
+@File    : app.py
+"""
 import aiofiles
 import gradio as gr 
 from metagpt.software_company import SoftwareCompany, SoftwareCompanyWithHuman
