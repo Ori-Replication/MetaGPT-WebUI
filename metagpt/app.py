@@ -68,7 +68,6 @@ async def startup(company_name : str,
 async def __continue(message_content : str):
     company = SoftwareCompany_Company
     company.environment.short_term_history.content = message_content
-    print(company.environment.short_term_history.content)
     company.environment.memory.add(company.environment.short_term_history)
     company.environment.history += f"\n{company.environment.short_term_history}"
     await company.continue_run()
@@ -93,14 +92,13 @@ async def research_startup(language : str,
     
 app = gr.Blocks()
 SoftwareCompany_Company = SoftwareCompany()
-import sys
-sys.path.append('/workspaces/CSworks/zknow/proj_meta_gpt_linux/metagpt/metagpt')
+
 with app:
     gr.Markdown("""
                 # MetaGPT
                 """)
     with gr.Tabs():
-        with gr.TabItem("MetaGPT") as generate_tab:
+        with gr.TabItem("MetaGPT") as generate_tab: 
             company_choise = gr.Dropdown(label = "Choose the company type",\
                                         choices = ["SoftwareCompany", "SoftwareCompany_With_Human"],\
                                         value = "SoftwareCompany_With_Human")

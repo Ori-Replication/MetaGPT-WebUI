@@ -77,7 +77,6 @@ async def startup(company_name : str,
 async def __continue(message_content : str):
     company = SoftwareCompany_Company
     company.environment.short_term_history.content = message_content
-    print(company.environment.short_term_history.content)
     company.environment.memory.add(company.environment.short_term_history)
     company.environment.history += f"\n{company.environment.short_term_history}"
     await company.continue_run()
@@ -100,11 +99,12 @@ async def research_startup(language : str,
     await role.run(topic)
     return f"save report to {RESEARCH_PATH / f'{topic}.md'}."
 
-    
+#initialize the app
 app = gr.Blocks()
+#initialize the company
 SoftwareCompany_Company = SoftwareCompany()
-import sys
-sys.path.append('/workspaces/CSworks/zknow/proj_meta_gpt_linux/metagpt/metagpt')
+
+
 with app:
     gr.Markdown("""
                 # MetaGPT
@@ -118,12 +118,9 @@ with app:
                     value = 6.0, info="The maxmium money you want to spend on the GPT generation")
                 n_round = gr.Number( label="轮数", value = 5, info="你想要运行的最大轮数",visible = False)
             with gr.Row():
-                run_tests = gr.Checkbox(label = "是否要雇佣质量保证工程师来进行测试", value = False)
-                with gr.Row():
-                    implement = gr.Checkbox(label = "是否要雇佣工程师来实施项目(仅支持python)", value = True)
-                    code_review = gr.Checkbox(label = "是否进行代码检查", value = False)
-            staffs = gr.CheckboxGroup(["项目经理", "产品经理", "架构师"],\
-                label="Choose the staff you would like to hire", value = ["项目经理", "产品经理", "架构师"])
+                code_review = gr.Checkbox(label = "是否进行代码检查", value = False)
+            staffs = gr.CheckboxGroup(["项目经理", "产品经理", "架构师", "工程师", "质量保证工程师"],\
+                label="选择需要雇佣的员工", value = ["项目经理", "产品经理", "架构师","工程师"])
             idea = gr.Textbox(label="你的创新想法，比如：“做一个贪吃蛇游戏”", value = "做一个贪吃蛇游戏")
             with gr.Row():
                 Start_MetaGPT = gr.Button(label="开始 / 重新开始", value = "开始 / 重新开始")
