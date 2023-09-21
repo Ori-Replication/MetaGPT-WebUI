@@ -23,8 +23,6 @@ async def startup(company_name : str,
                       investment : float = 6.0,
                       n_round : int = 5,
                       code_review : bool = True,
-                      run_tests : bool = False,
-                      implement : bool = True,
                       staffs : list = ["ProjectManager",
                                       "ProductManager",
                                       "Architect",]
@@ -46,18 +44,14 @@ async def startup(company_name : str,
             staff_list.append(ProductManager())
         elif staff == "架构师":
             staff_list.append(Architect())
+        elif staff == "工程师":
+            staff_list.append(Engineer(n_borg=5,use_code_review=code_review))
+        elif staff == "质量保证工程师":
+            staff_list.append(QaEngineer())
         else:
             raise Exception("不支持的员工类型")
     company.hire(staff_list)
         # if implement or code_review
-    if implement or code_review:
-        # developing features: implement the idea
-        company.hire([Engineer(n_borg=5, use_code_review=code_review)])
-
-    if run_tests:
-        # developing features: run tests on the spot and identify bugs
-        # (bug fixing capability comes soon!)
-        company.hire([QaEngineer()])
     company.invest(investment)
     company.start_project(idea)
     # report all output to webui
@@ -143,7 +137,7 @@ with app:
                 output_content_markdown_metagpt = gr.Markdown(label="Markdown输出", visible = False)
             
             
-        Start_MetaGPT.click(startup, [company_choise, idea, investment, n_round, code_review, run_tests, implement, staffs],\
+        Start_MetaGPT.click(startup, [company_choise, idea, investment, n_round, code_review, staffs],\
                                     [output_role_metagpt,output_cause_metagpt,output_sent_from_metagpt,\
                                     output_send_to_metagpt,output_content_metagpt,output_content_markdown_metagpt])
         continue_run.click(__continue, [output_content_metagpt], [output_role_metagpt,output_cause_metagpt,\
